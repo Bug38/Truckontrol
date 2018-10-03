@@ -1,7 +1,8 @@
 #include <Wire.h>
+#include "settings.h"
 
 void setup () {
-  Wire.begin(1);
+  Wire.begin(i2cMasterAddress);
 }
 
 void loop() {
