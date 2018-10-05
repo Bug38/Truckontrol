@@ -1,0 +1,3 @@
+[submodule "FlySkyIBus"]
+	path = FlySkyIBus
+	url = https://gitlab.com/timwilkinson/FlySkyIBus.git
