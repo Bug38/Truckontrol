@@ -15,7 +15,7 @@ void setup () {
   Wire.begin(i2cMasterAddress);
 
   // Tractor
-  tractor.initPins(pin_motor, pin_servo, pin_lights);
+  tractor.initPins(p_motor, p_servo, p_lights);
 }
 
 void loop() {
