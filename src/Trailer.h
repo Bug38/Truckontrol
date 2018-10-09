@@ -12,7 +12,6 @@ class Trailer {
     
   private:
     uint8_t address;
-    uint8_t pin_rear_lights;
 };
 
 #endif //__Trailer_h__
