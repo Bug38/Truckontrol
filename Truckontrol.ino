@@ -1,10 +1,10 @@
 #include <Wire.h>
 #include "settings.h"
-#include "RoadTractor.h"
-#include "FlySkyIBus/FlySkyIBus.h"
+#include "src/RoadTractor.h"
+#include "src/FlySkyIBus/FlySkyIBus.h"
 
 // Communication
-FlySkyIBus IBus;
+//FlySkyIBus IBus; // Already declared in library
 
 // Tractor
 RoadTractor tractor;
