@@ -9,14 +9,14 @@ void RoadTractor::initPins(uint8_t motor, uint8_t servo, uint8_t front_lights) {
   initPins(motor, servo, front_lights, 0);
 }
 void RoadTractor::initPins(uint8_t motor, uint8_t servo, uint8_t front_lights, uint8_t rear_lights) {
-  front_pin_lights = front_lights;
-  rear_pin_lights  = rear_lights;
+  pin_front_lights = front_lights;
+  pin_rear_lights  = rear_lights;
   pin_motor        = motor;
   pin_servo        = servo;
   
   // Outputs
-  pinMode(front_pin_lights, OUTPUT);
-  pinMode(rear_pin_lights, OUTPUT);
+  pinMode(pin_front_lights, OUTPUT);
+  pinMode(pin_rear_lights, OUTPUT);
   pinMode(pin_motor, OUTPUT);
   pinMode(pin_servo, OUTPUT);
 }

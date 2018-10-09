@@ -19,8 +19,8 @@ class RoadTractor {
     void setLight(uint8_t lights);
     
   private:
-    uint8_t front_pin_lights;
-    uint8_t rear_pin_lights;
+    uint8_t pin_front_lights;
+    uint8_t pin_rear_lights;
     uint8_t pin_motor;
     uint8_t pin_servo;
 
@@ -28,4 +28,4 @@ class RoadTractor {
     int8_t current_direction;
 };
 
-#endif
+#endif //__RoadTractor_h__
