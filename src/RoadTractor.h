@@ -3,6 +3,16 @@
 
 #include <Arduino.h>
 
+#define CHANNEL_SERVO     0
+#define CHANNEL_MOTOR     2
+#define CHANNEL_DIR       7
+#define CHANNEL_GEARBOX   6
+#define CHANNEL_LIGHT     8
+
+enum DIR_DFN {BACKWARD = 1000, FORWARD = 2000};
+enum GEARBOX_DFN {ONE = 1000, TWO = 1500, THREE = 2000};
+enum LIGHT_DFN {OFF = 1000, ON = 2000};
+
 class RoadTractor {
   public:
     // Build class instance
