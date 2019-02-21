@@ -1,43 +1,52 @@
 #include "RoadTractor.h"
 
+/*
+ * Constructor
+ */
 RoadTractor::RoadTractor() {};
 
-void RoadTractor::initPins(uint8_t motor, uint8_t servo) {
-  initPins(motor, servo, 0, 0);
-}
-void RoadTractor::initPins(uint8_t motor, uint8_t servo, uint8_t front_lights) {
-  initPins(motor, servo, front_lights, 0);
-}
-void RoadTractor::initPins(uint8_t motor, uint8_t servo, uint8_t front_lights, uint8_t rear_lights) {
-  pin_front_lights = front_lights;
-  pin_rear_lights  = rear_lights;
-  pin_motor        = motor;
-  pin_servo        = servo;
-  
-  // Outputs
-  pinMode(pin_front_lights, OUTPUT);
-  pinMode(pin_rear_lights, OUTPUT);
-  pinMode(pin_motor, OUTPUT);
-  pinMode(pin_servo, OUTPUT);
+/*
+ * Init
+ */
+void RoadTractor::initPins(uint8_t motor, uint8_t servo, uint8_t lights, uint8_t reverseLights) {
+  CTRL_MOTOR.attach(motor, 1000, 2000);
+  CTRL_SERVO.attach(servo, 1000, 2000);
+
+  pin_lights = lights;
+  pinMode(pin_lights, OUTPUT);
+  pin_reverseLights = reverseLights;
+  pinMode(pin_reverseLights, OUTPUT);
 }
 
-void RoadTractor::move(uint8_t speed, uint8_t direction) {
-  setSpeed(speed);
-  turn(direction);
+/*
+ * Movement
+ */
+void RoadTractor::move(uint16_t speedValue, uint16_t turnValue) {
+  setSpeed(speedValue);
+  setTurn(turnValue);
 }
 
-void RoadTractor::setSpeed(uint8_t speed) {
-  if(speed == current_speed)
-    return;
-  analogWrite(pin_motor,map(speed, 1000, 2000, 12, 25));
+void RoadTractor::setSpeed(uint16_t speedValue) {
+  if(speedValue == current_speed) return;
+  current_speed = speedValue;
+  if(speedValue < 1500) reverseLights(true);
+  if(speedValue > 1500) reverseLights(false);
+  CTRL_MOTOR.writeMicroseconds(speedValue);
 }
 
-void RoadTractor::turn(uint8_t direction) {
-  if(direction == current_direction)
-    return;
-  analogWrite(pin_motor,map(direction, 1000, 2000, 12, 25));
+void RoadTractor::setTurn(uint16_t turnValue) {
+  if(turnValue == current_turn) return;
+  CTRL_SERVO.writeMicroseconds(turnValue);
 }
 
-void RoadTractor::setLight(uint8_t lights) {
+/*
+ * Lights
+ */
+void RoadTractor::lights(bool lightsONOFF) {
+  digitalWrite(pin_lights, lightsONOFF);
+}
 
+
+void RoadTractor::reverseLights(bool turnONOFF) {
+  digitalWrite(pin_reverseLights, turnONOFF);
 }

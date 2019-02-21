@@ -9,13 +9,27 @@
 
 // Tractor
 RoadTractor tractor;
-Servo CTRL_SERVO;
-Servo CTRL_MOTOR;
+
+uint16_t getSpeedCommand(uint16_t s, uint16_t g) {
+  switch (g) {
+    case MIN_CHANNEL_VALUE:
+      return MED_CHANNEL_VALUE - (s - MIN_CHANNEL_VALUE) / 4;
+      break;
+    case MED_CHANNEL_VALUE:
+      return MED_CHANNEL_VALUE + (s - MIN_CHANNEL_VALUE) / 4;
+      break;
+    case MAX_CHANNEL_VALUE:
+      return MED_CHANNEL_VALUE + (s - MIN_CHANNEL_VALUE) / 2;
+      break;
+    default:
+      break;
+  }
+}
 
 void setup () {
+// Serial debug
 #define DEBUGSERIAL
 #ifdef DEBUGSERIAL
-  // Serial communication init
   Serial.begin(230400);
   while(!Serial);
   Serial.println("--------------------");
@@ -24,14 +38,12 @@ void setup () {
   Serial.println("--------------------");
 #endif
 
-  CTRL_SERVO.attach(9);  // attaches the servo on pin 9 to the servo object
-
-  // // Communication
+  // Init Communication
   IBus.begin(Serial2);
   Wire.begin(i2cMasterAddress);
 
-  // // Tractor
-  // tractor.initPins(p_motor, p_servo, p_lights);
+  // Define Tractor
+  tractor.initPins(p_motor, p_servo, p_lights, p_reverseLights);
 }
 
 int i = 0;
@@ -46,14 +58,6 @@ void loop() {
   { Serial.print(IBus.readChannel(c)); Serial.print(", "); }
   Serial.println();
 #endif
-  if(IBus.readChannel(7) == 2000)
-    digitalWrite(LED_BUILTIN, HIGH);
-  else
-    digitalWrite(LED_BUILTIN, LOW);
-  CTRL_SERVO.writeMicroseconds(IBus.readChannel(CHANNEL_SERVO));
-
-  // // Drive Tractor
-  // tractor.setSpeed(IBus.readChannel(ch_motor));
-  // tractor.turn(IBus.readChannel(ch_servo));
-  // tractor.setLight(IBus.readChannel(ch_lights));
+  tractor.lights(IBus.readChannel(ch_lights) == MAX_CHANNEL_VALUE);
+  tractor.move(getSpeedCommand(IBus.readChannel(ch_motor), IBus.readChannel(ch_gearbox)), IBus.readChannel(ch_servo));
 }
